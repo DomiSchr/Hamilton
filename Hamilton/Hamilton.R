@@ -1,12 +1,25 @@
 #Hamilton-Method for the Apportionment Problem
 
 hamilton <- function(p, H){
-  return(p[1] + H)
+  
+  P <- 0
+  
+  for(x in p) {
+   P <- P + x 
+  }
+  
+  A <- p/H
+  
+  share <- c(1:length(p))
+  tmp <- 1
+  
+  for(x in p) {
+    share[tmp] <- p/A 
+    tmp <- tmp + 1
+  }
+  
+  return(share)
 }
 
 
-
-p <- c(630, 480, 390, 500)
-H <- 10
-
-hamilton(p, H)
+hamilton(c(630, 480, 390, 500), 10)
