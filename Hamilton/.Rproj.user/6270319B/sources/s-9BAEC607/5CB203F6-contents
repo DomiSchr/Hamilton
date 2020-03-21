@@ -19,7 +19,7 @@ hamilton <- function(p, H){
   
   
   
-  return(fraction[1])
+  return(sum(share_floor))
 }
 
 
