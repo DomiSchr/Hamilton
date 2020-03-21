@@ -18,14 +18,19 @@ hamilton <- function(p, H){
     p[i, "fraction"] <-  p[i,"share"] - p[i, "share_floor"]
     
   }
-  return(p)
-  
+
   if(sum(p[, "share_floor"]) == H){
     return(p)
   } else {
-   #TODO: Hier den Spaß weiter!! Sortieren und so!
+
+    p[["result"]] <- replicate(1, p[["share_floor"]])
+    
+    ranks <- order(p$fraction, decreasing = TRUE)
+    for(i in 1:(H - sum(p[, "share_floor"]))){
+      p[[ranks[i], "result"]] <-  p[[ranks[i], "result"]] + 1
+    }
+    return(p)
   }
-  
 }
 
 p2 <- data.frame("state"=c("A", "B", "C", "D"), "population" = c(630, 480, 390, 500))
