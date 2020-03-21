@@ -1,28 +1,33 @@
 #Hamilton-Method for the Apportionment Problem
 
 hamilton <- function(p, H){
-  
-  P <- sum(p)
+  P <- sum(p2[,"population"])
   A <- P/H
   
   share <- array(0, length(p))
   share_floor <- array(0, length(p))
   fraction <- array(0, length(p))
   
+  p[["share"]] <- share
+  p[["share_floor"]] <- share_floor
+  p[["fraction"]] <- fraction
   
-  for(i in 1:length(p)){
-    share[i] <- p[i]/A
-    share_floor[i] <- floor(share[i])
-    fraction[i] <- share[i] - share_floor[i]
+  for(i in 1:length(p[["population"]])){
+    p[i,"share"] <- p[i,"population"]/A
+    p[i, "share_floor"] <- floor(p[i,"share"])
+    p[i, "fraction"] <-  p[i,"share"] - p[i, "share_floor"]
+    
+  }
+  return(p)
+  
+  if(sum(p[, "share_floor"]) == H){
+    return(p)
+  } else {
+   #TODO: Hier den Spaß weiter!! Sortieren und so!
   }
   
-  
-  
-  
-  return(sum(share_floor))
 }
 
+p2 <- data.frame("state"=c("A", "B", "C", "D"), "population" = c(630, 480, 390, 500))
 
-p <- c(630, 480, 390, 500)
-
-hamilton(p, 10)
+hamilton(p2, 10)
