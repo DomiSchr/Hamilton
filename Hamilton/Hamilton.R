@@ -6,14 +6,20 @@ hamilton <- function(p, H){
   A <- P/H
   
   share <- array(0, length(p))
+  share_floor <- array(0, length(p))
+  fraction <- array(0, length(p))
   
   
   for(i in 1:length(p)){
     share[i] <- p[i]/A
+    share_floor[i] <- floor(share[i])
+    fraction[i] <- share[i] - share_floor[i]
   }
   
   
-  return(share[1])
+  
+  
+  return(fraction[1])
 }
 
 
