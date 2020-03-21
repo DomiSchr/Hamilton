@@ -2,24 +2,21 @@
 
 hamilton <- function(p, H){
   
-  P <- 0
+  P <- sum(p)
+  A <- P/H
   
-  for(x in p) {
-   P <- P + x 
+  share <- array(0, length(p))
+  
+  
+  for(i in 1:length(p)){
+    share[i] <- p[i]/A
   }
   
-  A <- p/H
   
-  share <- c(1:length(p))
-  tmp <- 1
-  
-  for(x in p) {
-    share[tmp] <- p/A 
-    tmp <- tmp + 1
-  }
-  
-  return(share)
+  return(share[1])
 }
 
 
-hamilton(c(630, 480, 390, 500), 10)
+p <- c(630, 480, 390, 500)
+
+hamilton(p, 10)

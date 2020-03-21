@@ -5,14 +5,14 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2931218235",
+    "hash" : "0",
     "id" : "5CB203F6",
-    "lastKnownWriteTime" : 1584730234,
-    "last_content_update" : 1584730234350,
+    "lastKnownWriteTime" : 1584789318,
+    "last_content_update" : 1584789318376,
     "path" : "E:/Proggen/Git/Hamilton/Hamilton/Hamilton.R",
     "project_path" : "Hamilton.R",
     "properties" : {
-        "cursorPosition" : "16,22",
+        "cursorPosition" : "10,24",
         "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
