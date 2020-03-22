@@ -41,7 +41,3 @@ Hamilton <- function(p, h) {
   }
   return(p)
 }
-
-
-#TODO:
-#Wie verpacken?? Wie deployen? Auf den GitLab Server pushen??
