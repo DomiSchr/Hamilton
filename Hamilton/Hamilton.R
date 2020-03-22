@@ -1,39 +1,47 @@
-#Hamilton-Method for the Apportionment Problem
-
-hamilton <- function(p, H) {
-  P <- sum(p2[, "population"])
-  A <- P / H
+Hamilton <- function(p, h) {
+  # Implemented Hamilton-Method for the Apportionment Problem
+  #
+  # Args:
+  #   x: a data frame with the names of the states as first column 
+  #     and the equivalent population
+  #     size in the second column named 'population'.
+  #   h: the house size as variable.
+  #
+  # Returns:
+  #   A DataFrame containing all the Information 
+  #   and the final result in the last column.
+  
+  psum <- sum(p2[, "population"])
+  a <- psum / h
   
   share <- array(0, length(p))
-  share_floor <- array(0, length(p))
+  share.floor <- array(0, length(p))
   fraction <- array(0, length(p))
   
   p[["share"]] <- share
-  p[["share_floor"]] <- share_floor
+  p[["share.floor"]] <- share.floor
   p[["fraction"]] <- fraction
   
   for (i in 1:length(p[["population"]])) {
-    p[i, "share"] <- p[i, "population"] / A
-    p[i, "share_floor"] <- floor(p[i, "share"])
-    p[i, "fraction"] <-  p[i, "share"] - p[i, "share_floor"]
+    p[i, "share"] <- p[i, "population"] / a
+    p[i, "share.floor"] <- floor(p[i, "share"])
+    p[i, "fraction"] <-  p[i, "share"] - p[i, "share.floor"]
     
   }
   
-  if (sum(p[, "share_floor"]) == H) {
+  if (sum(p[, "share.floor"]) == h) {
     return(p)
   }
   
-  p[["result"]] <- replicate(1, p[["share_floor"]])
+  p[["result"]] <- replicate(1, p[["share.floor"]])
   
   ranks <- order(p$fraction, decreasing = TRUE)
-  for (i in 1:(H - sum(p[, "share_floor"]))) {
+  for (i in 1:(h - sum(p[, "share.floor"]))) {
     p[[ranks[i], "result"]] <-  p[[ranks[i], "result"]] + 1
   }
   return(p)
 }
 
-p2 <-
-  data.frame("state" = c("A", "B", "C", "D"),
-             "population" = c(630, 480, 390, 500))
 
-hamilton(p2, 10)
+#TODO:
+#Wie verpacken?? Wie deployen? Auf den GitLab Server pushen??
