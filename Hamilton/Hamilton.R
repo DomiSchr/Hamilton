@@ -14,17 +14,9 @@ Hamilton <- function(p, h) {
   psum <- sum(p[, 2])
   a <- psum / h
   
-  share <- array(0, length(p))
-  share.floor <- array(0, length(p))
-  fraction <- array(0, length(p))
-  
-  p[["share"]] <- NA
-  p["share"] <- share
-  browser()
-  p[["share.floor"]] <-NA
-  p["share.floor"] <- share.floor
-  p[["fraction"]] <- NA
-  p["fraction"] <- fraction
+  p["share"] <- array(0, length(p[,1]))
+  p["share.floor"] <- array(0, length(p[,1]))
+  p["fraction"] <- array(0, length(p[,1]))
   
   for (i in 1:length(p[,2])) {
     p[i, "share"] <- p[i, 2] / a
@@ -46,8 +38,8 @@ Hamilton <- function(p, h) {
   return(p)
 }
 
-states <- c("a","b", "c")
-population <- c(630, 480, 390)
+states <- c("a","b", "c", "d", "e")
+population <- c(630, 480, 390, 500, 200)
 
 p <- data.frame(states, population )
-Hamilton(p,10)
+Hamilton(p,15)
