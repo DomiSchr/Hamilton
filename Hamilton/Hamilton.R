@@ -37,9 +37,3 @@ Hamilton <- function(p, h) {
   }
   return(p)
 }
-
-states <- c("a","b", "c", "d", "e")
-population <- c(630, 480, 390, 500, 200)
-
-p <- data.frame(states, population )
-Hamilton(p,15)
