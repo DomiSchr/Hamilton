@@ -12,7 +12,7 @@ Hamilton <- function(p, h) {
   #   and the final result in the last column.
   
   psum <- sum(p[, 2])
-  a <- psum / h
+  a <- psum / h #Hare Quota! Needs to be chooseable!
   
   p["share"] <- array(0, length(p[,1]))
   p["share.floor"] <- array(0, length(p[,1]))
