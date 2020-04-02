@@ -19,22 +19,23 @@ LargestRemainderMethod <- function(p, h, q = 0) {
   
   if(q == 0){
     #Hare Quota(Default):
-    a <- psum / h 
+    a <- floor(psum / h)
     
   } else if(q == 1){
     #Droop Quota
-    a <- 1 + psum/(h + 1)
+    a <- floor(1 + psum/(h + 1))
     
-  } else if(q == 2){#
+  } else if(q == 2){
     #Hagenbach-Bischoff Quota
-    a <-  psum/(h + 1)
-    
+    a <-  floor(psum/(h + 1))
+
   } else if(q == 3){
     #Imperiali Quota
-    a <- psum/(h + 2)
+    a <- floor(psum/(h + 2))
     
   } else {
     # Exception!
+    stop("Chosen quota option not valid!")
   }
   
   
