@@ -1,4 +1,4 @@
-HamiltonV <- function(p, h, q = 0) {
+Hamilton <- function(p, h, q = 0) {
   #  Largest remainder method for the Apportionment Problem
   #
   # Args:
