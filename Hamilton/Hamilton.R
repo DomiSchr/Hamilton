@@ -14,6 +14,10 @@ Hamilton <- function(p, h, q = 0) {
   # Returns:
   #   A DataFrame containing all the Information 
   #   and the final result in the last column.
+  
+  if(h < 1){
+    stop("House size cannot be less than 1")
+  }
 
   p <- data.frame(p)
   

@@ -16,3 +16,8 @@ test <- function(x, y = 0){
 
 
 test(3)
+
+h <- 10
+h2 <- 12
+
+Hamilton(c(-630, 480, 390, 500),10, 1)
