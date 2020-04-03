@@ -4,5 +4,15 @@ population <- c(630, 480, 390)
 
 data <- data.frame(states, population)
 
+test <- function(x, y = 0){
+  if(!missing(y)){
+    x <- 0
+    for(i in x:y){
+      x <- x + 1
+    } 
+  }
+  return(x)
+}
 
-Hamilton(data, 10, 4)
+
+test(3)
