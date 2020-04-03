@@ -1,4 +1,4 @@
-HamiltonV <- function(p, h, q = 0) {
+Hamilton <- function(p, h, q = 0) {
   #  Largest remainder method for the Apportionment Problem
   #
   # Args:
@@ -14,10 +14,8 @@ HamiltonV <- function(p, h, q = 0) {
   # Returns:
   #   A DataFrame containing all the Information 
   #   and the final result in the last column.
-
-  p <- data.frame(p)
   
-  psum <- sum(p[, 1])
+  psum <- sum(p[, 2])
   
   if(q == 0){
     #Hare Quota(Default):
@@ -30,7 +28,7 @@ HamiltonV <- function(p, h, q = 0) {
   } else if(q == 2){
     #Hagenbach-Bischoff Quota
     a <-  floor(psum/(h + 1))
-    
+
   } else if(q == 3){
     #Imperiali Quota
     a <- floor(psum/(h + 2))
@@ -40,26 +38,27 @@ HamiltonV <- function(p, h, q = 0) {
     stop("Chosen quota option not valid!")
   }
   
+  
+  p["share"] <- array(0, length(p[,1]))
   p["share.floor"] <- array(0, length(p[,1]))
   p["fraction"] <- array(0, length(p[,1]))
   
-  for (i in 1:length(p[,1])) {
-    tmp <- p[i, 1] / a
-    p[i, "share.floor"] <- floor(tmp)
-    p[i, "fraction"] <- tmp - floor(tmp)
+  for (i in 1:length(p[,2])) {
+    p[i, "share"] <- p[i, 2] / a
+    p[i, "share.floor"] <- floor(p[i, "share"])
+    p[i, "fraction"] <-  p[i, "share"] - p[i, "share.floor"]
     
   }
   
   if (sum(p[, "share.floor"]) == h) {
-    return(p$"share.floor")
+    return(p)
   }
-  p["result"] <- NA
+  p[["result"]] <- NA
   p["result"] <- replicate(1, p[["share.floor"]])
   
   ranks <- order(p$fraction, decreasing = TRUE)
   for (i in 1:(h - sum(p[, "share.floor"]))) {
     p[[ranks[i], "result"]] <-  p[[ranks[i], "result"]] + 1
   }
-  
-  return(p$"result")
+  return(p)
 }

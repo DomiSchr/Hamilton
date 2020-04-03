@@ -1,4 +1,4 @@
-HamiltonV <- function(p, h, q) {
+HamiltonV <- function(p, h, q = 0) {
   #  Largest remainder method for the Apportionment Problem
   #
   # Args:
@@ -6,7 +6,7 @@ HamiltonV <- function(p, h, q) {
   #     and the equivalent population
   #     size in the second column.
   #   h: the house size as variable.
-  #   q: the quota. Choose: 0 for Hare Quota
+  #   q: the quota. Choose: 0 for Hare Quota(Default)
   #                         1 for Droop Quota
   #                         2 for Hagenbach-Bischoff Quota
   #                         3 for Imperiali Quota
@@ -14,13 +14,13 @@ HamiltonV <- function(p, h, q) {
   # Returns:
   #   A DataFrame containing all the Information 
   #   and the final result in the last column.
-  
+
   p <- data.frame(p)
   
   psum <- sum(p[, 1])
   
   if(q == 0){
-    #Hare Quota:
+    #Hare Quota(Default):
     a <- floor(psum / h)
     
   } else if(q == 1){
@@ -51,9 +51,9 @@ HamiltonV <- function(p, h, q) {
   }
   
   if (sum(p[, "share.floor"]) == h) {
-    return(p)
+    return(p$"share.floor")
   }
-  p[["result"]] <- NA
+  p["result"] <- NA
   p["result"] <- replicate(1, p[["share.floor"]])
   
   ranks <- order(p$fraction, decreasing = TRUE)
@@ -61,13 +61,5 @@ HamiltonV <- function(p, h, q) {
     p[[ranks[i], "result"]] <-  p[[ranks[i], "result"]] + 1
   }
   
-  return(p[["result"]])
+  return(p$"result")
 }
-
-HamiltonV <- function(p, h1, h2, q){
-  for(i in h1:h2){
-    HamiltonV(p, i, q)
-  }
-}
-
-HamiltonV(c(630, 480, 390, 500),10 ,12 ,0)
