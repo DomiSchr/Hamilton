@@ -7,7 +7,31 @@ MinimumRange <- function(p, a, h){
     data[i, "avg"] <- p[i] / a[i]
   }
   
-  #Caclulate the maximum disparty:
+  max1 <- MaxDisparty(data)
+  ranks <- order(data[, "avg"])
+  
+  data[ranks[1], "allotment"]  <- data[ranks[1], "allotment"] + 1
+  
+  max2 <- 0
+  tmp <-0
+
+  #Danach wieder eins draufrechnen, damit es insgesamt stimmt, so ziehe ich bei jeder Runde einen Sitz ab!  
+  for(i in 1:length(data[, 1]) - 1){
+    if(i != ranks[1]){
+      data[i, "allotment"] <- data[i, "allotment"] - 1
+      tmp <- MaxDisparty(data)
+      if(tmp < max2){
+        max2 <- tmp
+      }
+    }
+  }
+    
+  max2 <- MaxDisparty(data)
+  if(max)
+  return()
+}
+
+MaxDisparty <- function(data){
   max.disparty <- 0
   for(i in 1:length(data[, 1])){
     for(j in 1:length(data[, 1])){
@@ -17,9 +41,5 @@ MinimumRange <- function(p, a, h){
       }
     }
   }
-    
-  ranks <- order(data[, "avg"])
-  
-  
   return(max.disparty)
 }
