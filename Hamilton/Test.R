@@ -20,7 +20,9 @@ test(3)
 h <- 10
 h2 <- 12
 
-Hamilton(c(630, 480, 390, 500),10, 3)
+popu <- c(630, 480, 390, 500)
+allot <- Hamilton(popu,10)
+MinimumRange(popu, allot, 10)
 
 
 t <- data.frame("a" = c("a", "b", "c"), "b" = c(1, 2, 3))
