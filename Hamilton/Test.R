@@ -20,4 +20,11 @@ test(3)
 h <- 10
 h2 <- 12
 
-Hamilton(c(-630, 480, 390, 500),10, 1)
+Hamilton(c(630, 480, 390, 500),10, 3)
+
+
+t <- data.frame("a" = c("a", "b", "c"), "b" = c(1, 2, 3))
+t
+
+t["c"] <- cbind(replicate(1, t[["b"]]))
+as.vector(t[["c"]])

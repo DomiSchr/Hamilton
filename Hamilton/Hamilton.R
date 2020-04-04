@@ -49,13 +49,16 @@ Hamilton <- function(p, h, q = 0) {
   
   for (i in 1:length(p[,1])) {
     tmp <- p[i, 1] / a
+    if(tmp < 0){
+      stop("Seat amount cannot be a negative value!")
+    }
     p[i, "share.floor"] <- floor(tmp)
     p[i, "fraction"] <- tmp - floor(tmp)
     
   }
   
   if (sum(p[, "share.floor"]) == h) {
-    return(p$"share.floor")
+    return(as.vector(p[["share.floor"]]))
   }
   p["result"] <- NA
   p["result"] <- replicate(1, p[["share.floor"]])
@@ -64,6 +67,5 @@ Hamilton <- function(p, h, q = 0) {
   for (i in 1:(h - sum(p[, "share.floor"]))) {
     p[[ranks[i], "result"]] <-  p[[ranks[i], "result"]] + 1
   }
-  
-  return(p$"result")
+  return(as.vector(p[["result"]]))
 }
