@@ -7,13 +7,12 @@ MinimumRange <- function(p, a) {
   }
   
   max1 <- MaxDisparty(data)
-  return(max1)
   
   #Optimization by adding one seat the the state with the largest average consituency size:
   #TODO: Repeat this process until largest average consituency can't be optimized...
   ranks <- order(data[, "avg"])
   
-  data[ranks[1], "allotment"]  <- data[ranks[1], "allotment"] + 1
+  data[ranks[length(ranks)], "allotment"]  <- data[ranks[length(ranks)], "allotment"] + 1
   
   max2 <- 0
   bool <- 0
@@ -69,7 +68,6 @@ MaxDisparty <- function(data) {
   for (i in 1:length(data[, 1])) {
     for (j in 1:length(data[, 1])) {
       tmp <-  abs(data[i, "avg"] / data[j, "avg"] - 1)
-      print()
       if (tmp > max.disparty) {
         max.disparty <- tmp
       }
