@@ -1,13 +1,13 @@
-MinimumRange <- function(p, a, h) {
+MinimumRange <- function(p, a) {
   data <- data.frame("population" = p, "allotment" = a)
-  data["avg"] <- array(0, length(data[1, ]))
+  data["avg"] <- array(0, length(data[, 1]))
   
   for (i in 1:length(data[, 1])) {
     data[i, "avg"] <- p[i] / a[i]
   }
   
-  
   max1 <- MaxDisparty(data)
+  return(max1)
   
   #Optimization by adding one seat the the state with the largest average consituency size:
   #TODO: Repeat this process until largest average consituency can't be optimized...
@@ -55,18 +55,21 @@ MinimumRange <- function(p, a, h) {
   }
   
   if(bool == 0){
-    return(data)
+    return(max1)
   }
   
   
 
 }
 
+#Kann man evtl. optimieren!
+# Größtes und kleinstes Element raussuchen und nur damit rechnen!
 MaxDisparty <- function(data) {
   max.disparty <- 0
   for (i in 1:length(data[, 1])) {
     for (j in 1:length(data[, 1])) {
-      tmp <-  data[i, "avg"] / data[j, "avg"]
+      tmp <-  abs(data[i, "avg"] / data[j, "avg"] - 1)
+      print()
       if (tmp > max.disparty) {
         max.disparty <- tmp
       }
