@@ -1,10 +1,9 @@
 Hamilton <- function(p, h, q = 0) {
   #  Largest remainder method for the Apportionment Problem
+  #  Author: Dominik Schröder
   #
   # Args:
-  #   p: a data frame with the names of the states as first column 
-  #     and the equivalent population
-  #     size in the second column.
+  #   p: a vector with the population of each state per column.
   #   h: the house size as variable.
   #   q: the quota. Choose: 0 for Hare Quota(Default)
   #                         1 for Droop Quota
@@ -12,8 +11,7 @@ Hamilton <- function(p, h, q = 0) {
   #                         3 for Imperiali Quota
   #
   # Returns:
-  #   A DataFrame containing all the Information 
-  #   and the final result in the last column.
+  #   A Vector containing the allotment of seats.
   
   if(h < 1){
     stop("House size cannot be less than 1")
