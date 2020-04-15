@@ -1,4 +1,15 @@
 MinimumRange <- function(p, a) {
+  # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
+  #
+  # Args:
+  #   p: a vector containing the population of each state per column.
+  #   a: a vector containing the allotment of seats per column.
+  #
+  #
+  # Returns:
+  #   A Vector containing the optimized allotment of seats.
+  #   
+  
   data <- data.frame("population" = p, "allotment" = a)
   data["avg"] <- array(0, length(data[, 1]))
   

@@ -3,7 +3,7 @@ Hamilton <- function(p, h, q = 0) {
   #  Author: Dominik Schröder
   #
   # Args:
-  #   p: a vector with the population of each state per column.
+  #   p: a vector containing the population of each state per column.
   #   h: the house size as variable.
   #   q: the quota. Choose: 0 for Hare Quota(Default)
   #                         1 for Droop Quota
