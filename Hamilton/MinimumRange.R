@@ -24,13 +24,11 @@ MinimumRange <- function(p, a) {
     
     #Wiederholtes addieren, bis es nichtmehr kleiner wird
     
-    max3 <- .Machine$integer.max
+    bool <- 1
     
-    #C zum testen
-    c <- 0
-    while (c < 5) {
-      max3 <- max1
+    while (bool == 1) {
       data[ranks[length(ranks) - count], "allotment"]  <- data[ranks[length(ranks) - count], "allotment"] + 1
+      data <- CalcAvg(data)
       
       max2 <- 0
       bool <- 0
@@ -39,23 +37,22 @@ MinimumRange <- function(p, a) {
       for (i in 1:length(data[,1]))  {
         if (i != ranks[length(ranks)] - count) {
           data[i, "allotment"] <- data[i, "allotment"] - 1
-          print("for")
+          data <- CalcAvg(data)
           max2 <- MaxDisparty(data)
           if (max2 >= max1) {
             data[i, "allotment"] <- data[i, "allotment"] + 1
-            
+            data <- CalcAvg(data)
           } else {
             max1 <- max2
             bool <- bool + 1
-            print("else")
             break
           }
         }
       }
       if (bool == 0) {
         data[ranks[length(ranks) - count], "allotment"]  <- data[ranks[length(ranks) - count], "allotment"] - 1
+        data <- CalcAvg(data)
       }
-      c <- c + 1
     }
     
     
@@ -69,14 +66,12 @@ MinimumRange <- function(p, a) {
     ranks <- order(data[, "avg"])
     
     #Wiederholtes addieren, bis es nichtmehr kleiner wird
+ 
+    bool <- 1
     
-    max3 <- .Machine$integer.max
-    
-    #C zum testen
-    c <-0 
-    while (c < 5) {
-      max3 <- max1
+    while (bool == 1) {
       data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] + 1
+      data <- CalcAvg(data)
       
       max2 <- 0
       bool <- 0
@@ -85,22 +80,24 @@ MinimumRange <- function(p, a) {
       for (i in 1:length(data[,1]))  {
         if (i != ranks[1 + count]) {
           data[i, "allotment"] <- data[i, "allotment"] - 1
+          data <- CalcAvg(data)
           max2 <- MaxDisparty(data)
           if (max2 >= max1) {
             data[i, "allotment"] <- data[i, "allotment"] + 1
+            data <- CalcAvg(data)
             
           } else {
             max1 <- max2
             bool <- bool + 1
-            print("else")
             break
           }
         }
       }
       if (bool == 0) {
         data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] - 1
+        data <- CalcAvg(data)
+        
       }
-      c <- c + 1
     }
   }
   
