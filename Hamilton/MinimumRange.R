@@ -1,5 +1,6 @@
 MinimumRange <- function(p, a) {
   # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
+  # Author: Dominik Schröder
   #
   # Args:
   #   p: a vector containing the population of each state per column.
