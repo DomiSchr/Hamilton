@@ -1,11 +1,7 @@
 population <- c(282000, 566399, 623966, 193719, 187254, 269003, 238748, 170902, 112772, 176353, 452159, 498135, 108700, 259404, 302755, 134443, 239611, 160418, 74534)
-allotment <- c(9, 19, 21, 6, 6, 9, 8, 6, 4, 6, 15, 17, 4, 9, 10, 5, 8, 5, 2)
 
-adamsallot <- c(9, 18, 20, 7, 6, 9, 8, 6, 4, 6, 15, 16, 4, 9, 10, 5, 8, 6, 3)
-
-data <- MinimumRange(population, allotment)
-data
-
+data <- MinimumRangeNeu(population, 169)
+sum(data[, "allotment"])
 
 population2 <- c(
   1328726,
@@ -30,30 +26,9 @@ population2 <- c(
   228583
 )
 
-allotment2 <- c(18,
-                4,
-                6,
-                4,
-                7,
-                4,
-                5,
-                5,
-                6,
-                3,
-                4,
-                3,
-                2,
-                13,
-                3,
-                6,
-                3,
-                3,
-                4,
-                3)
 
-
-data2 <- MinimumRange(population2, allotment2)
-data2
+data2 <- MinimumRangeNeu(population2, 106)
+sum(data2[, "allotment"])
 
 
 
