@@ -44,7 +44,7 @@ MinimumRangeNeu <- function(p, h) {
     #Wiederholtes addieren, bis es nichtmehr kleiner wird
     
     bool <- 1
-    
+    browser()
     while (bool == 1) {
       data[ranks[length(ranks) - count], "allotment"]  <- data[ranks[length(ranks) - count], "allotment"] + 1
       data <- CalcAvg(data)

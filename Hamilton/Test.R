@@ -1,6 +1,7 @@
 population <- c(282000, 566399, 623966, 193719, 187254, 269003, 238748, 170902, 112772, 176353, 452159, 498135, 108700, 259404, 302755, 134443, 239611, 160418, 74534)
 
 data <- MinimumRangeNeu(population, 169)
+data
 sum(data[, "allotment"])
 
 population2 <- c(
@@ -26,8 +27,8 @@ population2 <- c(
   228583
 )
 
-
 data2 <- MinimumRangeNeu(population2, 106)
+data2
 sum(data2[, "allotment"])
 
 
