@@ -40,11 +40,14 @@ MinimumRangeNeu <- function(p, h) {
     #Optimization by adding one seat the the state with the largest average consituency size:
     #TODO: Repeat this process until largest average consituency can't be optimized...
     data <- CalcAvg(data)
-    ranks <- order(data[, "avg"])
+    if(count == 0){
+      ranks <- order(data[, "avg"])  
+    }
+    
     #Wiederholtes addieren, bis es nichtmehr kleiner wird
     
     bool <- 1
-    browser()
+    # browser()
     while (bool == 1) {
       data[ranks[length(ranks) - count], "allotment"]  <- data[ranks[length(ranks) - count], "allotment"] + 1
       data <- CalcAvg(data)
