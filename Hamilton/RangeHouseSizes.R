@@ -24,14 +24,19 @@ RangeHouseSizes <- function(FUN, p, h1, h2, variation = 0) {
   
   output <- data.frame(p)
   
-  for (i in h1:h2) {
+  calc = function(p, i, variation){
     tryCatch({
       tmp <- FUN(p, i, variation)},
       error = function(e) {
         tmp <- FUN(p, i)
       }
     )
-    output[paste(i)] <- tmp
+    return(tmp)
+  }
+    
+  
+  for (i in h1:h2) {
+    output[paste(i)] <- calc(p, i, variation)
   }
   output["p"] <- NULL
   return(output)
