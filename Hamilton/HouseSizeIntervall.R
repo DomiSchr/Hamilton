@@ -1,4 +1,4 @@
-RangeHouseSizes <- function(FUN, p, h1, h2, variation = 0) {
+HouseSizeIntervall <- function(FUN, p, h1, h2, variation = 0) {
   #  The method calculates a range of house sizes for the given Apportionment Method.
   #  Author: Dominik Schröder
   #
@@ -16,22 +16,15 @@ RangeHouseSizes <- function(FUN, p, h1, h2, variation = 0) {
     stop("House size cannot be less than 1")
   }
   
-  for(i in 1:length(p)){
-    if(p[1] < 1){
-      stop("Seat amount cannot be a negative value!")
-    }
-  }
-  
   output <- data.frame(p)
   
-  calc = function(p, i, variation){
+  calc <- function(p, i, variation){
     tryCatch({
-      tmp <- FUN(p, i, variation)},
+      return(FUN(p, i, variation))},
       error = function(e) {
-        tmp <- FUN(p, i)
+        return(FUN(p, i))
       }
     )
-    return(tmp)
   }
     
   

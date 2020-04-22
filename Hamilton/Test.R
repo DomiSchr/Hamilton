@@ -34,8 +34,32 @@ sum(data2[, "allotment"])
 test <- Hamilton(population, 160)
 test
 
-RangeHouseSizes(MinimumRange, population, 169, 160, 1)
-MinimumRange(population, 160, 2)
+RangeHouseSizes(Utilitarian, population, 160, 165, 2)
 
 
 max(allotment)
+
+
+a <- 1
+b <- "Test"  
+
+test <- function(a, b){
+tryCatch({
+    c <- a + b
+    return(c)
+    },
+    
+    error = function(e){
+      c <- "Geht nicht"
+      return(c)
+    }
+)
+}
+
+test(a, b)
+  
+  
+  
+
+
+
