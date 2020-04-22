@@ -11,10 +11,20 @@ RangeHouseSizes <- function(FUN, p, h1, h2, variation = 0) {
   #
   # Returns:
   #   A data frame containing the allotment for each state per row and the different house sizes per column.
+  
+  if(h1 < 1 || h2 < 1){
+    stop("House size cannot be less than 1")
+  }
+  
+  for(i in 1:length(p)){
+    if(p[1] < 1){
+      stop("Seat amount cannot be a negative value!")
+    }
+  }
+  
   output <- data.frame(p)
   
   for (i in h1:h2) {
-    output[paste(i)] <- FUN(p, i, variation)
     tryCatch({
       tmp <- FUN(p, i, variation)},
       error = function(e) {
