@@ -34,8 +34,8 @@ sum(data2[, "allotment"])
 test <- Hamilton(population, 160)
 test
 
-range <- RangeHouseSizes(Leximin, population, 169, 160, 2)
-range
+RangeHouseSizes(MinimumRange, population, 169, 160, 1)
+MinimumRange(population, 160, 2)
 
 
 max(allotment)
