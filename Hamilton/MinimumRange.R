@@ -1,78 +1,78 @@
-MinimumRange <- function(p, h) {
+MinimumRange <- function(vector.population, integer.housesize) {
   # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
   # Author: Dominik Schröder
   #
   # Args:
-  #   p: a vector containing the population of each state per column.
-  #   h: the house size as variable.
+  #   vector.population: a vector containing the population of each state per column.
+  #   integer.housesize: the house size as variable.
   #
   #
   # Returns:
   #   A Vector containing the optimized allotment of seats.
   #   
-  data <- data.frame("population" = p)
+  data <- data.frame("population" = vector.population)
+  integer.numberofstates <- length(vector.population)
   
   #__________________________________________________________________________
   #Create arbitrary allotment
-  data["allotment"] <- array(0, length(data[, 1]))
+  data["allotment"] <- array(0, integer.numberofstates)
   
-  tmp <- floor(h/length(p))
+  tmp <- floor(integer.housesize/integer.numberofstates)
   
-  for(i in 1:length(data[, 1])){
+  for(i in 1:integer.numberofstates){
     data[i, "allotment"] <- tmp
   }
   
-  count <- 1
-  while(sum(data[, "allotment"]) < h){
-    data[count, "allotment"] <- data[count, "allotment"] + 1
-    count <- (count + 1) %% h
+  i <- 1
+  while(sum(data[, "allotment"]) < integer.housesize){
+    data[i, "allotment"] <- data[i, "allotment"] + 1
+    i <- (i + 1) %% (integer.housesize - 1)
   }
   
   #________________________________________________________________________
-  #Eingentlicher Algorithmus:
+  #Start of Algorithm:
   
-  data["avg"] <- array(0, length(data[, 1]))
+  data["avgconstituency"] <- array(0, integer.numberofstates)
   
-  for (count in 0:(ceiling(length(data[, 1]) / 2))) {
+  # Looks at two elements in each iteration.
+  for (count in 0:(ceiling(integer.numberofstates / 2))) {
     #_________________________________________________________________________________________
     #Biggest aj Value
-    max1 <- MaxDisparty(data)
+    maxDisparity1 <- MaxDisparity(data)
     #Optimization by adding one seat the the state with the largest average consituency size:
-    #TODO: Repeat this process until largest average consituency can't be optimized...
+
     data <- CalcAvg(data)
-    if(count == 0){
-      ranks <- order(data[, "avg"])  
-    }
+    ranks <- order(data[, "avgconstituency"])  
     
-    #Wiederholtes addieren, bis es nichtmehr kleiner wird
     
-    bool <- 1
-    # browser()
-    while (bool == 1) {
-      data[ranks[length(ranks) - count], "allotment"]  <- data[ranks[length(ranks) - count], "allotment"] + 1
+    #If Algorithm didn't find a new optimisation, bool is set to 1. Iteration continues
+    bool <- TRUE
+    
+    while (bool) {
+      data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] + 1
       data <- CalcAvg(data)
       
-      max2 <- 0
-      bool <- 0
+      maxDisparity2 <- 0
+      bool <- FALSE
       
-      #Bei der ersten kleineren disparty wird abgebrochen!
-      for (i in 1:length(data[,1]))  {
-        if (i != ranks[length(ranks) - count]) {
+      #Break when the first smaller disparity is found!
+      for (i in (1 + count):integer.numberofstates)  {
+        if (i != ranks[integer.numberofstates - count]) {
           data[i, "allotment"] <- data[i, "allotment"] - 1
           data <- CalcAvg(data)
-          max2 <- MaxDisparty(data)
-          if (max2 >= max1) {
+          maxDisparity2 <- MaxDisparity(data)
+          if (maxDisparity2 >= maxDisparity1) {
             data[i, "allotment"] <- data[i, "allotment"] + 1
             data <- CalcAvg(data)
           } else {
-            max1 <- max2
-            bool <- bool + 1
+            maxDisparity1 <- maxDisparity2
+            bool <- TRUE
             break
           }
         }
       }
-      if (bool == 0) {
-        data[ranks[length(ranks) - count], "allotment"]  <- data[ranks[length(ranks) - count], "allotment"] - 1
+      if (!bool) {
+        data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] - 1
         data <- CalcAvg(data)
       }
     }
@@ -80,42 +80,39 @@ MinimumRange <- function(p, h) {
     
     #_________________________________________________________________________
     #Smallest rj Value
-    max1 <- MaxDisparty(data)
+    maxDisparity1 <- MaxDisparity(data)
     
     #Optimization by adding one seat the the state with the largest average consituency size:
     #TODO: Repeat this process until largest average consituency can't be optimized...
     data <- CalcAvg(data)
-    #ranks <- order(data[, "avg"])
     
-    #Wiederholtes addieren, bis es nichtmehr kleiner wird
+    bool <- TRUE
     
-    bool <- 1
-    
-    while (bool == 1) {
+    while (bool) {
       data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] - 1
       data <- CalcAvg(data)
       
-      max2 <- 0
-      bool <- 0
+      maxDisparity2 <- 0
+      bool <- FALSE
       
-      #Bei der ersten kleineren disparty wird abgebrochen!
-      for (i in 1:length(data[,1]))  {
+      #Break when the first smaller disparity is found!
+      for (i in (integer.numberofstates - count):1)  {
         if (i != ranks[1 + count]) {
           data[i, "allotment"] <- data[i, "allotment"] + 1
           data <- CalcAvg(data)
-          max2 <- MaxDisparty(data)
-          if (max2 >= max1) {
+          maxDisparity2 <- MaxDisparity(data)
+          if (maxDisparity2 >= maxDisparity1) {
             data[i, "allotment"] <- data[i, "allotment"] - 1
             data <- CalcAvg(data)
             
           } else {
-            max1 <- max2
-            bool <- bool + 1
+            maxDisparity1 <- maxDisparity2
+            bool <- TRUE
             break
           }
         }
       }
-      if (bool == 0) {
+      if (!bool) {
         data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] + 1
         data <- CalcAvg(data)
       }
@@ -126,31 +123,18 @@ MinimumRange <- function(p, h) {
   
 }
 
-#Kann man evtl. optimieren!
-# Größtes und kleinstes Element raussuchen und nur damit rechnen!
-MaxDisparty1 <- function(data) {
-  max.disparty <- 0
-  for (i in 1:length(data[, 1])) {
-    for (j in 1:length(data[, 1])) {
-      tmp <-  abs(data[i, "avg"] / data[j, "avg"] - 1)
-      if (tmp > max.disparty) {
-        max.disparty <- tmp
-      }
-    }
-  }
-  return(max.disparty)
-}
+# Searches for largest and smallest element in the given array and calculates max.disparty with those.
 
-MaxDisparty <- function(data){
+MaxDisparity <- function(data){
   data <- CalcAvg(data)
-  max <- max(data[, "avg"])
-  min <- min(data[, "avg"])
+  max <- max(data[, "avgconstituency"])
+  min <- min(data[, "avgconstituency"])
   return(abs((max/min)-1))
 }
 
 CalcAvg <- function(data){
   for (i in 1:length(data[, 1])) {
-    data[i, "avg"] <- data[i, "population"] / data[i, "allotment"]
+    data[i, "avgconstituency"] <- data[i, "population"] / data[i, "allotment"]
   }
   return(data)
 } 

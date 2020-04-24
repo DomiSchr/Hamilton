@@ -1,4 +1,4 @@
-HouseSizeIntervall <- function(FUN, p, h1, h2, variation = 0) {
+HouseSizeInterval <- function(FUN, p, h1, h2, variation = 0) {
   #  The method calculates a range of house sizes for the given Apportionment Method.
   #  Author: Dominik Schröder
   #

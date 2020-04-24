@@ -27,8 +27,8 @@ population2 <- c(
   228583
 )
 
-data2 <- MinimumRangeNeu(population2, 106)
-data2
+MinimumRange(population2, 106)
+
 sum(data2[, "allotment"])
 
 test <- Hamilton(population, 160)
