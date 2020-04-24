@@ -27,7 +27,10 @@ population2 <- c(
   228583
 )
 
-MinimumRange(population2, 106)
+data <- MinimumRange(population2, 106)
+# ranks <- order(data[, "avgconstituency"])
+# data[ranks[length(ranks)],"avgconstituency"] / data[ranks[1],"avgconstituency"]
+data
 
 sum(data2[, "allotment"])
 

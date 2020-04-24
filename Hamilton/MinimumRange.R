@@ -47,11 +47,11 @@ MinimumRange <- function(vector.population, integer.housesize) {
     
     #If Algorithm didn't find a new optimisation, bool is set to 1. Iteration continues
     bool <- TRUE
+    integer.bestindex <-0
     
     while (bool) {
       data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] + 1
       data <- CalcAvg(data)
-      
       maxDisparity2 <- 0
       bool <- FALSE
       
@@ -61,20 +61,22 @@ MinimumRange <- function(vector.population, integer.housesize) {
           data[i, "allotment"] <- data[i, "allotment"] - 1
           data <- CalcAvg(data)
           maxDisparity2 <- MaxDisparity(data)
-          if (maxDisparity2 >= maxDisparity1) {
-            data[i, "allotment"] <- data[i, "allotment"] + 1
-            data <- CalcAvg(data)
-          } else {
+          
+          if (maxDisparity2 < maxDisparity1) {
             maxDisparity1 <- maxDisparity2
+            integer.bestindex <- i
             bool <- TRUE
-            break
           }
+          data[i, "allotment"] <- data[i, "allotment"] + 1
+          data <- CalcAvg(data)
         }
       }
       if (!bool) {
         data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] - 1
-        data <- CalcAvg(data)
+      } else {
+        data[integer.bestindex, "allotment"] <- data[integer.bestindex, "allotment"] - 1
       }
+      data <- CalcAvg(data)
     }
     
     
@@ -87,6 +89,7 @@ MinimumRange <- function(vector.population, integer.housesize) {
     data <- CalcAvg(data)
     
     bool <- TRUE
+    integer.bestindex <-0
     
     while (bool) {
       data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] - 1
@@ -101,22 +104,22 @@ MinimumRange <- function(vector.population, integer.housesize) {
           data[i, "allotment"] <- data[i, "allotment"] + 1
           data <- CalcAvg(data)
           maxDisparity2 <- MaxDisparity(data)
-          if (maxDisparity2 >= maxDisparity1) {
-            data[i, "allotment"] <- data[i, "allotment"] - 1
-            data <- CalcAvg(data)
-            
-          } else {
+          if (maxDisparity2 < maxDisparity1) {
             maxDisparity1 <- maxDisparity2
+            integer.bestindex <- i
             bool <- TRUE
-            break
           }
+          data[i, "allotment"] <- data[i, "allotment"] - 1
+          data <- CalcAvg(data)
         }
       }
-      if (!bool) {
-        data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] + 1
-        data <- CalcAvg(data)
+      if (bool == FALSE) {
+        data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] + 1
+      } else {
+        data[integer.bestindex, "allotment"] <- data[integer.bestindex, "allotment"] + 1
       }
-    }
+      data <- CalcAvg(data)
+  }
   }
   
   return(data)
@@ -138,3 +141,4 @@ CalcAvg <- function(data){
   }
   return(data)
 } 
+ 
