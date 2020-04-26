@@ -14,7 +14,10 @@ Hamilton <- function(p, h, q = 0) {
   #   A Vector containing the allotment of seats.
   
   if(h < 1){
-    stop("House size cannot be less than 1")
+    stop("House size cannot be less than 1!")
+  }
+  if(h < length(p)){
+    stop("House size cannot be smaller than number of states!")
   }
 
   p <- data.frame(p)
@@ -46,10 +49,14 @@ Hamilton <- function(p, h, q = 0) {
   p["fraction"] <- array(0, length(p[,1]))
   
   for (i in 1:length(p[,1])) {
-    tmp <- p[i, 1] / a
+    tmp <- p[i,1]
     if(tmp < 0){
-      stop("Seat amount cannot be a negative value!")
+      stop("Population size cannot be a negative value!")
     }
+    if(tmp %% 1 != 0){
+      stop("Population size must be an integer value!")
+    }
+    tmp <- tmp / a
     p[i, "share.floor"] <- floor(tmp)
     p[i, "fraction"] <- tmp - floor(tmp)
     
