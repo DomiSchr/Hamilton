@@ -21,7 +21,7 @@ population2 <- c(
   228583
 )
 
-MinimumRange(population2, 106)
+Hamilton(population2, 106)
 
 
 population <- c(1328726,
@@ -32,7 +32,9 @@ population <- c(1328726,
 
 MinimumRange(population, 27)
 
-  
+
+test <- 1
+typeof(test)
   
 
 
