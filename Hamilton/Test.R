@@ -20,17 +20,16 @@ population2 <- c(
   288071,
   228583
 )
+MinimumRangeNeu(population2, 106)
 
-Hamilton(population2, 106)
+
+MinimumRangeAlt(population2, 106)
 
 
-population <- c(1328726,
-                309694,
-                424057,
-                291425,
-                539907)
 
-MinimumRange(population, 27)
+population <- c(2, 4, 6, 8)
+
+MinimumRangeNeu(population, 8)
 
 
 test <- 1
