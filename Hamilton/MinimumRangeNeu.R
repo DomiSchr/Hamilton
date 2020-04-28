@@ -1,4 +1,4 @@
-MinimumRange <- function(vector.population, integer.housesize) {
+MinimumRangeNeu <- function(vector.population, integer.housesize) {
   # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
   # Author: Dominik Schröder
   #

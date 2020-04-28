@@ -1,4 +1,4 @@
-MinimumRangeTest <- function(vector.population, integer.housesize) {
+MinimumRangeAlt <- function(vector.population, integer.housesize) {
   # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
   # Author: Dominik Schröder
   #
@@ -34,18 +34,16 @@ MinimumRangeTest <- function(vector.population, integer.housesize) {
   
   data["avgconstituency"] <- array(0, integer.numberofstates)
   
-  
   # Looks at two elements in each iteration.
   for (count in 0:(ceiling(integer.numberofstates / 2))) {
     #_________________________________________________________________________________________
     #Biggest aj Value
     maxDisparity1 <- MaxDisparity(data)
     #Optimization by adding one seat the the state with the largest average consituency size:
-    
+
     data <- CalcAvg(data)
+    ranks <- order(data[, "avgconstituency"])  
     
-    tmp <- max(data[, "avgconsituency"])
-    maxDataIndex <- data[tmp, "avgconsituency"]
     
     #If Algorithm didn't find a new optimisation, bool is set to 1. Iteration continues
     bool <- TRUE
@@ -53,32 +51,30 @@ MinimumRangeTest <- function(vector.population, integer.housesize) {
     while (bool) {
       data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] + 1
       data <- CalcAvg(data)
+      
       maxDisparity2 <- 0
-      integer.bestindex <- 0
       bool <- FALSE
       
       #Break when the first smaller disparity is found!
-      for (i in (1 + count):(integer.numberofstates - count))  {
+      for (i in (1 + count):integer.numberofstates)  {
         if (i != ranks[integer.numberofstates - count]) {
           data[i, "allotment"] <- data[i, "allotment"] - 1
           data <- CalcAvg(data)
           maxDisparity2 <- MaxDisparity(data)
-          
-          if (maxDisparity2 < maxDisparity1) {
+          if (maxDisparity2 >= maxDisparity1) {
+            data[i, "allotment"] <- data[i, "allotment"] + 1
+            data <- CalcAvg(data)
+          } else {
             maxDisparity1 <- maxDisparity2
-            integer.bestindex <- i
             bool <- TRUE
+            break
           }
-          data[i, "allotment"] <- data[i, "allotment"] + 1
-          data <- CalcAvg(data)
         }
       }
       if (!bool) {
         data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] - 1
-      } else {
-        data[integer.bestindex, "allotment"] <- data[integer.bestindex, "allotment"] - 1
+        data <- CalcAvg(data)
       }
-      data <- CalcAvg(data)
     }
     
     
@@ -95,31 +91,31 @@ MinimumRangeTest <- function(vector.population, integer.housesize) {
     while (bool) {
       data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] - 1
       data <- CalcAvg(data)
-      integer.bestindex <- 0
+      
       maxDisparity2 <- 0
       bool <- FALSE
       
       #Break when the first smaller disparity is found!
-      for (i in (integer.numberofstates - count):(1 + count))  {
+      for (i in (integer.numberofstates - count):1)  {
         if (i != ranks[1 + count]) {
           data[i, "allotment"] <- data[i, "allotment"] + 1
           data <- CalcAvg(data)
           maxDisparity2 <- MaxDisparity(data)
-          if (maxDisparity2 < maxDisparity1) {
+          if (maxDisparity2 >= maxDisparity1) {
+            data[i, "allotment"] <- data[i, "allotment"] - 1
+            data <- CalcAvg(data)
+            
+          } else {
             maxDisparity1 <- maxDisparity2
-            integer.bestindex <- i
             bool <- TRUE
+            break
           }
-          data[i, "allotment"] <- data[i, "allotment"] - 1
-          data <- CalcAvg(data)
         }
       }
-      if (bool == FALSE) {
-        data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] + 1
-      } else {
-        data[integer.bestindex, "allotment"] <- data[integer.bestindex, "allotment"] + 1
+      if (!bool) {
+        data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] + 1
+        data <- CalcAvg(data)
       }
-      data <- CalcAvg(data)
     }
   }
   
@@ -142,4 +138,3 @@ CalcAvg <- function(data){
   }
   return(data)
 } 
-
