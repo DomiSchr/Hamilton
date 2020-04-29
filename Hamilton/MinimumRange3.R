@@ -1,4 +1,4 @@
-MinimumRangeNeu <- function(vector.population, integer.housesize) {
+MinimumRange3 <- function(vector.population, integer.housesize) {
   # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
   # Author: Dominik Schröder
   #
@@ -32,6 +32,8 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
   #Start of Algorithm:
   
   data["avgconstituency"] <- array(0, integer.numberofstates)
+  data["originalorder"] <- array(1:integer.numberofstates, integer.numberofstates)
+  print(data)
   
   # Looks at two elements in each iteration.
   for (count in 0:(ceiling(integer.numberofstates / 2))) {
@@ -54,13 +56,9 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
       tmp <- data[ranks[integer.numberofstates - count], "allotment"]
       if (tmp > 0) {
         data[ranks[integer.numberofstates - count], "allotment"]  <- tmp + 1
-        print("Teil 1:")
-        print(tmp)
-        print(data)
-        print(maxDisparity1)
         data <- CalcAvg(data)
         maxDisparity2 <- 0
-
+        
         integer.bestindex <- 0
         bool <- FALSE
         
@@ -71,7 +69,7 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
               data[i, "allotment"] > 1) {
             data[i, "allotment"] <- data[i, "allotment"] - 1
             maxDisparity2 <- MaxDisparity(data)
-
+            
             if (maxDisparity2 < maxDisparity1) {
               maxDisparity1 <- maxDisparity2
               integer.bestindex <- i
@@ -111,9 +109,7 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
       if (data[ranks[1 + count], "allotment"] > 1) {
         data[ranks[1 + count], "allotment"]  <-
           data[ranks[1 + count], "allotment"] - 1
-        print("Teil 2:")
-        print(data)
-        print(maxDisparity1)
+
         data <- CalcAvg(data)
         maxDisparity2 <- 0
         
@@ -125,7 +121,7 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
           if (i != ranks[1 + count] && data[i, "allotment"] > 1) {
             data[i, "allotment"] <- data[i, "allotment"] + 1
             maxDisparity2 <- MaxDisparity(data)
-
+            
             
             if (maxDisparity2 < maxDisparity1) {
               maxDisparity1 <- maxDisparity2
@@ -137,7 +133,8 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
         }
         data <- CalcAvg(data)
         if (bool == FALSE) {
-          data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] + 1
+          data[ranks[integer.numberofstates - count], "allotment"]  <-
+            data[ranks[integer.numberofstates - count], "allotment"] + 1
         } else {
           data[integer.bestindex, "allotment"] <-
             data[integer.bestindex, "allotment"] + 1
