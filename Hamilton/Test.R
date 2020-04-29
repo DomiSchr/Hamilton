@@ -27,14 +27,18 @@ MinimumRangeAlt(population2, 106)
 
 
 
-population <- c(2, 4, 6, 8)
+population <- c(2, 4, 6, 8, 10, 12, 14, 16)
 
-MinimumRangeNeu(population, 8)
+MinimumRange3(population, 11)
 
 
-test <- 1
-typeof(test)
-  
+test <- data.frame("pop" = population, "avg" = c(1, 2, 3, 4))
+test
+test <- test[-c(2),]
+test
+test
+test[1, "avg"] <- 2
+
 
 
 

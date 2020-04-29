@@ -33,12 +33,13 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
   
   data["avgconstituency"] <- array(0, integer.numberofstates)
   data["originalorder"] <- array(1:integer.numberofstates, integer.numberofstates)
-  print(data)
+  
+  results <- data
+  
   
   # Looks at two elements in each iteration.
-  for (count in 0:(ceiling(integer.numberofstates / 2))) {
+  for (count in 1:(ceiling(integer.numberofstates / 2))) {
     #_________________________________________________________________________________________
-    print(paste("count", count))
     
     maxDisparity1 <- MaxDisparity(data)
     
@@ -46,16 +47,15 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
     
     data <- CalcAvg(data)
     ranks <- order(data[, "avgconstituency"])
-    #Sortieren!!!!
     
     
     #If Algorithm didn't find a new optimisation, bool is set to 1. Iteration continues
     bool <- TRUE
     
     while (bool) {
-      tmp <- data[ranks[integer.numberofstates - count], "allotment"]
+      tmp <- data[ranks[length(ranks)], "allotment"]
       if (tmp > 0) {
-        data[ranks[integer.numberofstates - count], "allotment"]  <- tmp + 1
+        data[ranks[length(ranks)], "allotment"]  <- tmp + 1
         data <- CalcAvg(data)
         maxDisparity2 <- 0
         
@@ -63,9 +63,8 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
         bool <- FALSE
         
         #Break when the first smaller disparity is found!
-        for (i in (1 + count):(integer.numberofstates - count))  {
-          print(paste("i", i))
-          if (i != ranks[integer.numberofstates - count] &&
+        for (i in 1:length(ranks))  {
+          if (i != ranks[length(ranks)] &&
               data[i, "allotment"] > 1) {
             data[i, "allotment"] <- data[i, "allotment"] - 1
             maxDisparity2 <- MaxDisparity(data)
@@ -80,8 +79,7 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
         }
         data <- CalcAvg(data)
         if (!bool) {
-          data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] - 1
-          print(bool)
+          data[ranks[length(ranks)], "allotment"]  <- data[ranks[length(ranks)], "allotment"] - 1
         } else {
           data[integer.bestindex, "allotment"] <-
             data[integer.bestindex, "allotment"] - 1
@@ -103,12 +101,10 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
     data <- CalcAvg(data)
     
     bool <- TRUE
-    print("Doch da!")
     
     while (bool) {
-      if (data[ranks[1 + count], "allotment"] > 1) {
-        data[ranks[1 + count], "allotment"]  <-
-          data[ranks[1 + count], "allotment"] - 1
+      if (data[ranks[1], "allotment"] > 1) {
+        data[ranks[1], "allotment"]  <- data[ranks[1], "allotment"] - 1
 
         data <- CalcAvg(data)
         maxDisparity2 <- 0
@@ -117,8 +113,8 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
         bool <- FALSE
         
         #Break when the first smaller disparity is found!
-        for (i in (integer.numberofstates - count):(1 + count))  {
-          if (i != ranks[1 + count] && data[i, "allotment"] > 1) {
+        for (i in length(ranks):1)  {
+          if (i != ranks[1] && data[i, "allotment"] > 1) {
             data[i, "allotment"] <- data[i, "allotment"] + 1
             maxDisparity2 <- MaxDisparity(data)
             
@@ -133,8 +129,7 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
         }
         data <- CalcAvg(data)
         if (bool == FALSE) {
-          data[ranks[integer.numberofstates - count], "allotment"]  <-
-            data[ranks[integer.numberofstates - count], "allotment"] + 1
+          data[ranks[1], "allotment"]   <- data[ranks[1], "allotment"]  + 1
         } else {
           data[integer.bestindex, "allotment"] <-
             data[integer.bestindex, "allotment"] + 1
@@ -144,9 +139,25 @@ MinimumRange3 <- function(vector.population, integer.housesize) {
         bool <- FALSE
       }
     }
+    
+    #Copying the result in the results dataframe
+    #The largest/last element in the ranks array
+    idx <- data[ranks[length(ranks)], "originalorder"]
+    results[idx, "allotment"] <- data[ranks[length(ranks)], "allotment"]
+
+      
+    #The smallest/first element in the ranks array
+    idx <- data[ranks[1], "originalorder"]
+    results[idx, "allotment"] <- data[ranks[1], "allotment"]
+    
+    #Remove elements from data
+    data <- data[-c(ranks[length(ranks)]), ]
+    data <- data[-c(ranks[1]), ]
   }
   
-  return(data)
+  
+  
+  return(results)
   
 }
 
