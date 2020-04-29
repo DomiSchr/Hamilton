@@ -41,7 +41,6 @@ MinimumRange2 <- function(vector.population, integer.housesize) {
     data <- CalcAvg(data)
     ranks <- order(data[, "avgconstituency"])
     
-    #If Algorithm didn't find a new optimisation, iterate is set to 1. Iteration continues
     iterate <- TRUE
     
     while (iterate) {
@@ -88,16 +87,13 @@ MinimumRange2 <- function(vector.population, integer.housesize) {
       } else {
         iterate <- FALSE
       }
+      data <- CalcAvg(data)
     }
     
     #_________________________________________________________________________
     
     maxDisparity1 <- MaxDisparity(data)
     
-    #Optimization by adding one seat the the state with the largest average consituency size:
-    data <- CalcAvg(data)
-    
-    #If Algorithm didn't find a new optimisation, iterate is set to 1. Iteration continues
     iterate <- TRUE
     
     while (iterate) {
@@ -107,7 +103,7 @@ MinimumRange2 <- function(vector.population, integer.housesize) {
         data[ranks[1 + count], "allotment"]  <-
           data[ranks[1 + count], "allotment"] - 1
         
-        data <- CalcAvg(data)
+
         maxDisparity2 <- 0
         
         integer.bestindex <- 0
@@ -128,6 +124,7 @@ MinimumRange2 <- function(vector.population, integer.housesize) {
             #Undoes the changes
             data[i, "allotment"] <- data[i, "allotment"] - 1
           }
+          
         }
         data <- CalcAvg(data)
         if (iterate == FALSE) {
@@ -139,21 +136,22 @@ MinimumRange2 <- function(vector.population, integer.housesize) {
           data[integer.bestindex, "allotment"] <-
             data[integer.bestindex, "allotment"] + 1
         }
-        data <- CalcAvg(data)
       } else {
         iterate <- FALSE
       }
     }
+    data <- CalcAvg(data)
   }
   
   return(as.vector(data[["allotment"]]))
   
 }
 
-# Searches for largest and smallest element in the given array and calculates max.disparty with those.
+#__________________________________________________________________________________________________________
 
 MaxDisparity <- function(data) {
   data <- CalcAvg(data)
+  # Searches for largest and smallest element in the given array and calculates max.disparty with those.
   max <- max(data[, "avgconstituency"])
   min <- min(data[, "avgconstituency"])
   return(abs((max / min) - 1))
