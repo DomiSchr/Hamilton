@@ -1,4 +1,4 @@
-MinimumRangeNeu <- function(vector.population, integer.housesize) {
+MinimumRange2 <- function(vector.population, integer.housesize) {
   # Lexicographic Burt-Harris/Minimum range method for the Apportionment Problem
   # Author: Dominik Schröder
   #
@@ -28,117 +28,125 @@ MinimumRangeNeu <- function(vector.population, integer.housesize) {
     data[i, "allotment"] <- data[i, "allotment"] + 1
     i <- (i + 1) %% (integer.housesize - 1)
   }
-  #________________________________________________________________________
-  #Start of Algorithm:
   
   data["avgconstituency"] <- array(0, integer.numberofstates)
   
-  # Looks at two elements in each iteration.
+  #________________________________________________________________________
+  #Start of the Algorithm:
+  
+  # Looks at two elements per iteration.
   for (count in 0:(ceiling(integer.numberofstates / 2))) {
-    #_________________________________________________________________________________________
-    
     maxDisparity1 <- MaxDisparity(data)
-    
-    #Optimization by adding one seat the the state with the largest average consituency size:
     
     data <- CalcAvg(data)
     ranks <- order(data[, "avgconstituency"])
     
+    #If Algorithm didn't find a new optimisation, iterate is set to 1. Iteration continues
+    iterate <- TRUE
     
-    #If Algorithm didn't find a new optimisation, bool is set to 1. Iteration continues
-    bool <- TRUE
-    
-    while (bool) {
-      tmp <- data[ranks[integer.numberofstates - count], "allotment"]
-      if (tmp > 0) {
-        data[ranks[integer.numberofstates - count], "allotment"]  <- tmp + 1
-        data <- CalcAvg(data)
+    while (iterate) {
+      currentAllotment <-
+        data[ranks[integer.numberofstates - count], "allotment"]
+      
+      #Guarantees that the allotment for every state is at least one seat.
+      if (currentAllotment > 0) {
+        #Optimization by adding one seat to the state with the largest average consituency size.
+        data[ranks[integer.numberofstates - count], "allotment"]  <-
+          currentAllotment + 1
         maxDisparity2 <- 0
-
-        integer.bestindex <- 0
-        bool <- FALSE
         
-        #Break when the first smaller disparity is found!
+        integer.bestindex <- 0
+        iterate <- FALSE
+        
+        #Iterating over the Dataframe, searching for the best disparity
         for (i in (1 + count):(integer.numberofstates - count))  {
           if (i != ranks[integer.numberofstates - count] &&
               data[i, "allotment"] > 1) {
             data[i, "allotment"] <- data[i, "allotment"] - 1
             maxDisparity2 <- MaxDisparity(data)
-
+            
+            #When a lower disparity is found, remember the index in integer.bestindex
             if (maxDisparity2 < maxDisparity1) {
               maxDisparity1 <- maxDisparity2
               integer.bestindex <- i
-              bool <- TRUE
+              iterate <- TRUE
             }
+            #Undoes the changes
             data[i, "allotment"] <- data[i, "allotment"] + 1
           }
         }
-        data <- CalcAvg(data)
-        if (!bool) {
-          data[ranks[integer.numberofstates - count], "allotment"]  <- data[ranks[integer.numberofstates - count], "allotment"] - 1
+        
+        if (!iterate) {
+          #No optimisation was found, undoes the change
+          data[ranks[integer.numberofstates - count], "allotment"]  <-
+            data[ranks[integer.numberofstates - count], "allotment"] - 1
         } else {
+          #Restore to the best found disparity
           data[integer.bestindex, "allotment"] <-
             data[integer.bestindex, "allotment"] - 1
-          
         }
-        data <- CalcAvg(data)
       } else {
-        bool <- FALSE
+        iterate <- FALSE
       }
     }
-    
     
     #_________________________________________________________________________
     
     maxDisparity1 <- MaxDisparity(data)
     
     #Optimization by adding one seat the the state with the largest average consituency size:
-    #TODO: Repeat this process until largest average consituency can't be optimized...
     data <- CalcAvg(data)
     
-    bool <- TRUE
+    #If Algorithm didn't find a new optimisation, iterate is set to 1. Iteration continues
+    iterate <- TRUE
     
-    while (bool) {
+    while (iterate) {
+      #Guarantees that the allotment for every state is at least one seat.
       if (data[ranks[1 + count], "allotment"] > 1) {
+        #Optimization by removing one seat to the state with the smallest average consituency size.
         data[ranks[1 + count], "allotment"]  <-
           data[ranks[1 + count], "allotment"] - 1
-
+        
         data <- CalcAvg(data)
         maxDisparity2 <- 0
         
         integer.bestindex <- 0
-        bool <- FALSE
+        iterate <- FALSE
         
-        #Break when the first smaller disparity is found!
+        #Iterating over the Dataframe, searching for the best disparity
         for (i in (integer.numberofstates - count):(1 + count))  {
           if (i != ranks[1 + count] && data[i, "allotment"] > 1) {
             data[i, "allotment"] <- data[i, "allotment"] + 1
             maxDisparity2 <- MaxDisparity(data)
-
             
+            #When a lower disparity is found, remember the index in integer.bestindex
             if (maxDisparity2 < maxDisparity1) {
               maxDisparity1 <- maxDisparity2
               integer.bestindex <- i
-              bool <- TRUE
+              iterate <- TRUE
             }
+            #Undoes the changes
             data[i, "allotment"] <- data[i, "allotment"] - 1
           }
         }
         data <- CalcAvg(data)
-        if (bool == FALSE) {
-          data[ranks[1 + count], "allotment"]  <- data[ranks[1 + count], "allotment"] + 1
+        if (iterate == FALSE) {
+          #No optimisation was found, undoes the change
+          data[ranks[1 + count], "allotment"]  <-
+            data[ranks[1 + count], "allotment"] + 1
         } else {
+          #Restore to the best found disparity
           data[integer.bestindex, "allotment"] <-
             data[integer.bestindex, "allotment"] + 1
         }
         data <- CalcAvg(data)
       } else {
-        bool <- FALSE
+        iterate <- FALSE
       }
     }
   }
   
-  return(data)
+  return(as.vector(data[["allotment"]]))
   
 }
 
