@@ -13,7 +13,7 @@ Hamilton <- function(p, h, q = 0) {
   # Returns:
   #   A Vector containing the allotment of seats.
   
-  CheckInput(p, h)
+  # CheckInput(p, h)
   
   p <- data.frame(p)
   

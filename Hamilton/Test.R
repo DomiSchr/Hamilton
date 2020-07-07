@@ -20,7 +20,7 @@ population2 <- c(
   288071,
   228583
 )
-MinimumRange2(population2, 106)
+HouseSizeInterval(Hamilton, population2, 100, 106)
 
 
 MinimumRangeAlt(population2, 106)
@@ -40,5 +40,5 @@ test
 test[1, "avg"] <- 2
 
 
-
+is.(3)
 

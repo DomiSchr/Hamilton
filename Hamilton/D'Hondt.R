@@ -24,5 +24,5 @@ DHondt <- function(dat,seats) {
   return(dat)
 }
 
-#DHondtcv2('Test1.csv',1,7)
+DHondtcv2('Test1.csv',1,7)
 

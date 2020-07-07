@@ -7,6 +7,8 @@ CheckInput <- function(vector.population, integer.housesize) {
   #   integer.housesize: the house size as variable.
   #
   
+  print(integer.housesize)
+  
   if (typeof(integer.housesize) != "double" ||
       integer.housesize %% 1 != 0) {
     stop("House size must be an integer value!")
